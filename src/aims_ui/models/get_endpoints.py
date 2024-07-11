@@ -44,7 +44,7 @@ def get_endpoints(called_from=None):
           'a_single_matches',
       ),
       Endpoint(
-          'Multiple Address',
+          'Multiple Entries',
           'multiple_address_original',
           "Search for not just  one address. Several. Get lots of results you can look through. This service completes many single searches from a file.",
           'b_multiple_matches',

@@ -11,12 +11,12 @@
     "title": "",
     "itemsList": [
       {
-        "title": "Under " + (params.bulk_limits.limit_mini_bulk|string) + " Addresses",
+        "title": "Under " + (params.bulk_limits.limit_mini_bulk|string) + " Entries",
         "url": 'multiple_address_original',
       }
     ] + ([] if reduced else [
       {
-        "title": "Up To " + (params.bulk_limits.limit_vast_bulk|string) + " Addresses",
+        "title": "Up To " + (params.bulk_limits.limit_vast_bulk|string) + " Entries",
         "url": url_for('multiple_address'),
       },
       {
