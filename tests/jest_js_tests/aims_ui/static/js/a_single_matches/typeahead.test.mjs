@@ -2,7 +2,7 @@ import { test, expect } from '@jest/globals';
 import {
   getParamsFromPage,
   setupEventListeners,
-} from '../../../../../../src/aims_ui/static/js/a_single_matches/typeahead.mjs';
+} from '../../../../../../src/cims_ui/static/js/a_single_entry/typeahead.mjs';
 
 // Test for the getParamsFromPage function
 test('Check if parameters are correctly generated from page inputs', () => {

@@ -1,4 +1,4 @@
-# address-index-ui
+# classifications-ui
 
 To run this project:
 
@@ -12,7 +12,7 @@ Pre-requisites:
 
 | Environment Variable         | Value                      | Command                                     |
 |-----------------------------|----------------------------|---------------------------------------------|
-| `export FLASK_APP`          | `"aims_ui"`                | `export FLASK_APP="aims_ui"`                 |
+| `export FLASK_APP`          | `"cims_ui"`                | `export FLASK_APP="cims_ui"`                 |
 | `export FLASK_ENV`          | `"development"`            | `export FLASK_ENV="development"`             |
 | `export API_AUTH_TYPE`      | `"JWT"`                    | `export API_AUTH_TYPE="JWT"`                 |
 | `export API_JWT_TOKEN`      | `[enter_jwt_token_here]`   | `export API_JWT_TOKEN="[enter_jwt_token_here]"` |
@@ -69,6 +69,6 @@ FOR WINDOWS USERS ONLY:
 
 *Set environment variables and run (on localhost:5000)*
 `set FLASK_ENV=development`
-`set FLASK_APP=src/aims_ui`
+`set FLASK_APP=src/cims_ui`
 `python -m flask run`
 

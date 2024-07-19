@@ -1,7 +1,7 @@
 from flask import Flask
 
-from src import aims_ui
-from aims_ui.models.endpoint_options import get_options
+from src import cims_ui
+from cims_ui.models.endpoint_options import get_options
 
 
 def test_get_options_percentage_match():

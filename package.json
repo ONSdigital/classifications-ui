@@ -1,5 +1,5 @@
 {
-  "name": "address-index-ui",
+  "name": "classifications-ui",
   "version": "1.0.0",
   "description": "To run this project:",
   "main": "index.js",
@@ -25,15 +25,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ONSdigital/address-index-ui.git"
+    "url": "git+https://github.com/ONSdigital/classifications-ui.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ONSdigital/address-index-ui/issues"
+    "url": "https://github.com/ONSdigital/classifications-ui/issues"
   },
-  "homepage": "https://github.com/ONSdigital/address-index-ui#readme",
+  "homepage": "https://github.com/ONSdigital/classifications-ui#readme",
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
