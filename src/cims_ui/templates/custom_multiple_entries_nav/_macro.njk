@@ -1,0 +1,32 @@
+{% macro customMultipleMatchNav(params) %}
+
+{% from "components/section-navigation/_macro.njk" import onsSectionNavigation %}
+<br>
+
+{{ onsSectionNavigation({
+  "id": "section-menu",
+  "currentPath": params.current_path, 
+  "headingLevel": 2,
+  "sections": [{
+    "title": "",
+    "itemsList": [
+      {
+        "title": "Under " + (params.bulk_limits.limit_mini_bulk|string) + " Entries",
+        "url": 'multiple_entries_original',
+      }
+    ] + ([] if reduced else [
+      {
+        "title": "Up To " + (params.bulk_limits.limit_vast_bulk|string) + " Entries",
+        "url": url_for('multiple_entries'),
+      },
+      {
+        "title": "Monitor Up To " + (params.bulk_limits.limit_vast_bulk|string) + " Jobs",
+        "url": url_for('multiple_entries_results'),
+      }
+    ])
+  }]
+}) }}
+
+<br>
+
+{% endmacro %}

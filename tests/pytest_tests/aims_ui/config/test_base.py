@@ -1,7 +1,7 @@
 from flask import Flask
 
-from src import aims_ui
-from src.aims_ui.config import base as config_base
+from src import cims_ui
+from src.cims_ui.config import base as config_base
 
 
 def get_base_config_dict():
@@ -72,7 +72,7 @@ def test_base_classification_list():
       'PREFERRED_URL_SCHEME',
       'TEMPLATES_AUTO_RELOAD',
       'MAX_COOKIE_SIZE',
-      'AIMS_UI_PAGES_LOCATION',
+      'CIMS_UI_PAGES_LOCATION',
       'ALL_PAGE_NAMES',
       'API_AUTH_TYPE',
       'API_BSC_AUTH_PASSWORD',

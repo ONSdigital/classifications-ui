@@ -2,7 +2,7 @@ import { test, expect } from '@jest/globals';
 import {
   getAllLinks,
   findIfPafOrNagWasUsed,
-} from '../../../../../../src/aims_ui/static/js/b_multiple_matches/multiple_address_results.mjs';
+} from '../../../../../../src/cims_ui/static/js/b_multiple_entries/multiple_entries_results.mjs';
 import { getTableElement } from './table_source.mjs';
 
 // Test links aquired
