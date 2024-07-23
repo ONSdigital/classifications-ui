@@ -22,23 +22,34 @@
 	}) }}
 
 {{onsPanel({
-"body": "<p>This will schedule an asynchronous managed job. You can monitor progress and download results from Monitor Jobs.</p>
-<p>To get started, upload a CSV file of up to " + (bulk_limits.limit_vast_bulk|string) + " addresses to be matched. The file must have only two columns, id and address.</p>
-	<p>Download a <a href='/downloads/example_multiple_entries_big'> sample file</a>"
+"body": "<p>'Up To " + (bulk_limits.limit_vast_bulk|string) + " Entries' will perform the autocoding while you wait, and is only suitable for small jobs. For
+	larger jobs, visit 'Over " + (bulk_limits.limit_vast_bulk|string) + " Entries'.</p>
+	<!--	This will schedule an asynchronous managed job. You can monitor progress and download results from Monitor Jobs.</p>-->
+	<p>To get started, upload a CSV file of up to " + (bulk_limits.limit_vast_bulk|string) + " entries to be autocoded.</p>
+	<!--The file must have only two columns, id and address.</p>-->
+	<p> For SIC autocoding, the file must have only two columns: id and descriptions of the main economic activity of business's / business units
+	(i.e. business description). Please enter the names of these columns in the fields below.</p>
+
+	<p> For SOC autocoding the file needs four columns: id, job title, business description and 'qualification' (with a '1'
+	 indicating degree-level equivalent or higher role requirements and a '2' representing all other levels).</p>
+
+	<p>Download a <a href='/downloads/example_multiple_entries_big'> sample file for SIC autocoding</a><br>
+		Download a <a href='/downloads/example_multiple_entries_big'> sample file for SOC autocoding</a></p>
+
+	<p>NB: Future releases of this	web-tool will introduce more flexibility around autocoding from other variable-sets.</p>"
     })}}
 
-{% call onsPanel({ "type": 'warn' }) %}
-  If multiple addresses tie in confidence score then addresses are sorted in ascending UPRN order, meaning the lowest UPRNs come first.
-{% endcall %}
+<!--{% call onsPanel({ "type": 'warn' }) %}-->
+<!--  If multiple addresses tie in confidence score then addresses are sorted in ascending UPRN order, meaning the lowest UPRNs come first.-->
+<!--{% endcall %}-->
 
 <form method=post enctype=multipart/form-data>
 {{ customSearch ({ "Fields": searchable_fields,
 		   "endpoints": endpoints, 
 		   "remove_buttons": True,
-		   "remove_search_button":False,
+		   "remove_search_button":True,
                    "results_page": results_page, }) }}
 
-<br>
 <br>
 
 {{ onsUpload({
@@ -57,7 +68,7 @@
 
 <br>
 {{ onsButton({
-        "text": "Match Addresses",
+        "text": "Autocode Entries",
         "type": "submit",
         "value": "Download",
         "classes": "btn",  })  }}
@@ -67,6 +78,8 @@
 <br>
 
 <script type=module src="static/js/e_all_pages/all_pages_first_js.mjs"></script>
+
+<script type=module src="static/js/b_multiple_entries/multiple_entries_hide_show_events.mjs"></script>
 
 <script type=module src="static/js/b_multiple_entries/all_multiple_entries_pages.mjs"></script>
 

@@ -303,21 +303,74 @@ def get_fields(endpoint_name, include_UPRN_redirect=False):
   elif endpoint_name == 'multiple_entries':
     return ([
         Field(
-            'limitperaddress',
-            display_title="Limit Per Address",
-            classes='ons-input--w-4',
-            description=
-            'Enter the number of matched addresses to return if multiple matches are available (1 - 10)',
-            previous_value='1',
+            'classifications_required',
+            search_type='radio',
+            flag=False,
+            display_title='Does your data require SIC or SOC codes?',
+            radio_options=[
+                {
+                    'id': 'SIC',
+                    'text': 'SIC (SIC 2007 framework)'
+                },
+                {
+                    'id': 'SOC',
+                    'text': 'SOC (SOC 2020 framework)'
+                },
+            ],
         ),
         Field(
-            'name',
-            display_title="Name (Optinal)",
-            description='Optional tag to organise matches',
-            previous_value='',
+            'business_desc_col_name',
+            search_type='input_box',
+            search_box_visible=True,
+            required=True,
+            display_title='Enter the column name used for the business\'s main economic activity.'
         ),
-        common_fields['multiple_entries_paf_nag_preference'],
-        common_fields['header_row_export'],
+        Field(
+            'job_title_col_name',
+            search_type='input_box',
+            search_box_visible=False,
+            required=False,
+            display_title='Enter the column name used for job title.'
+        ),
+        Field(
+            'qualification_col_name',
+            search_type='input_box',
+            search_box_visible=False,
+            required=False,
+            display_title='Enter the column name used for qualification (column values must be \'1\' or \'2\' where \'1\' indicates degree-level equivalent or above, \'2\' represents all others)'
+        ),
+        Field(
+            'display-type',
+            search_type='radio',
+            flag=False,
+            display_title='How would you like to receive your results?',
+            radio_options=[
+                {
+                    'id': 'Download',
+                    'text': 'Download as CSV'
+                },
+                {
+                    'id': 'Display',
+                    'text': 'Display in browser'
+                },
+            ],
+        ),
+        # Field(
+        #     'limitperaddress',
+        #     display_title="Limit Per Address",
+        #     classes='ons-input--w-4',
+        #     description=
+        #     'Enter the number of matched addresses to return if multiple matches are available (1 - 10)',
+        #     previous_value='1',
+        # ),
+        # Field(
+        #     'name',
+        #     display_title="Name (Optinal)",
+        #     description='Optional tag to organise matches',
+        #     previous_value='',
+        # ),
+        # common_fields['multiple_entries_paf_nag_preference'],
+        # common_fields['header_row_export'],
     ])
   elif endpoint_name == 'postcode':
     return ([
