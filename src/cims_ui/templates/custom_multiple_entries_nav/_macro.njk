@@ -11,19 +11,14 @@
     "title": "",
     "itemsList": [
       {
-        "title": "Under " + (params.bulk_limits.limit_mini_bulk|string) + " Entries",
-        "url": 'multiple_entries_original',
-      }
-    ] + ([] if reduced else [
-      {
         "title": "Up To " + (params.bulk_limits.limit_vast_bulk|string) + " Entries",
         "url": url_for('multiple_entries'),
       },
       {
-        "title": "Monitor Up To " + (params.bulk_limits.limit_vast_bulk|string) + " Jobs",
+        "title": "Over " + (params.bulk_limits.limit_vast_bulk|string) + " Entries",
         "url": url_for('multiple_entries_results'),
       }
-    ])
+    ]
   }]
 }) }}
 
