@@ -50,24 +50,25 @@ def jsonify_address(address_to_lookup):
   return address_to_lookup
 
 
-def multiple_entries_match(file, all_user_input, download=False):
+def multiple_entries_match(file, all_user_input, table_id, download=False):
   # Process the uploaded file from th euser
-  contents = file.readlines()
-  remove_header_row(contents)
+  
+  # contents = file.readlines()
+  # remove_header_row(contents)
 
-  mm_dict = {}  # mm = multiple match
-  addresses = []
-  for line in contents:
-    line = line.strip().decode('utf-8')
-    given_id, address_to_lookup = line.split(',', maxsplit=1)
-    address_to_lookup = jsonify_address(address_to_lookup)
-    current_address = {'id': given_id, 'address': address_to_lookup}
-    addresses.append(current_address)
-  mm_dict['addresses'] = addresses[:]
+  # mm_dict = {}  # mm = multiple match
+  # addresses = []
+  # for line in contents:
+  #   line = line.strip().decode('utf-8')
+  #   given_id, address_to_lookup = line.split(',', maxsplit=1)
+  #   address_to_lookup = jsonify_address(address_to_lookup)
+  #   current_address = {'id': given_id, 'address': address_to_lookup}
+  #   addresses.append(current_address)
+  # mm_dict['addresses'] = addresses[:]
 
   try:
     # Submit Multiple Match to API
-    submit_mm_job('a', mm_dict, all_user_input)
+    submit_mm_job('a', all_user_input, table_id)
   except Exception as e:
     logging.error('Error on a multiple match API call')
     return page_error(None, e, 'multiple_entries')

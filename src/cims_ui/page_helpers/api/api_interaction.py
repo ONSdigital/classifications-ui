@@ -209,14 +209,14 @@ def null_or_undefined_to_False(var):
   return var
 
 
-def submit_mm_job(user, addresses, all_user_input, uprn=False):
+def submit_mm_job(user, all_user_input, table_id, uprn=False):
   """API helper for job endpoints """
   url = app.config.get('BM_API_URL') + '/bulk'
 
-  # Change the paf-nag default selection
-  if all_user_input.get('paf-nag-preference') == 'PAF':
-    all_user_input['pafdefault'] = 'true'
-  del all_user_input['paf-nag-preference']
+  # # Change the paf-nag default selection
+  # if all_user_input.get('paf-nag-preference') == 'PAF':
+  #   all_user_input['pafdefault'] = 'true'
+  # del all_user_input['paf-nag-preference']
 
   header_row_export = all_user_input.get('header_row_export', 'False')
   header_row_export = null_or_undefined_to_False(header_row_export)
@@ -232,15 +232,15 @@ def submit_mm_job(user, addresses, all_user_input, uprn=False):
   header = get_header(bulk=True)
   header['user'] = full_tag
 
-  addresses = str(addresses).replace('"', '')  # Remove Quotes from address
-  addresses = str(addresses).replace(
-      "'", '"')  # Replace quotes for correct JSON formatting
+  # addresses = str(addresses).replace('"', '')  # Remove Quotes from address
+  # addresses = str(addresses).replace(
+  #     "'", '"')  # Replace quotes for correct JSON formatting
 
   r = requests.post(
       url,
       headers=header,
       params=params,
-      data=addresses.encode('utf-8'),
+      table_id=table_id,
   )
 
   log_message = ("POST Request to " + r.url + "\n\n | Status Code: " +

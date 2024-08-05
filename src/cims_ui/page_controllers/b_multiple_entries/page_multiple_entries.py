@@ -10,6 +10,8 @@ from cims_ui.models.get_fields import get_fields
 from .utils.multiple_entries_lookup import multiple_entries_match
 from .utils.upload_utils import check_valid_upload
 from .utils.upload_utils import FileUploadException
+from .utils.bq_functions import load_csv_into_bigquery
+
 
 page_name = 'multiple_entries'
 
@@ -66,20 +68,51 @@ def multiple_entries():
 
   file = request.files['file']
 
-  try:
-    # Validate file
-    file_valid, error_description, error_title = check_valid_upload(
-        file, bulk_limits.get('limit_vast_bulk'))
-  except FileUploadException as e:
-    return final(searchable_fields,
-                 bulk_limits,
-                 page_location,
-                 error_description=e.error_description,
-                 error_title=e.error_title)
+  table_id = load_csv_into_bigquery(file)
+  
 
-  if file_valid:
-    multiple_entries_match(file, all_user_input, download=True)
-    return final(all_user_input, bulk_limits, page_location)
+  # if not file_valid:
+  #   # File invalid? Return error
+  #   return final(searchable_fields,
+  #                bulk_limits,
+  #                page_location,
+  #                error_description=error_description,
+  #                error_title=error_title)
+  # else:
+  #   for field in searchable_fields:
+  #     if field.database_name == 'display-type':
+  #       results_type = field.get_selected_radio()
+  #
+  #   if results_type == 'Download':
+  #     try:
+  #       full_results, line_count = multiple_entries_match(
+  #           file, all_user_input, download=True)
+  #     except ConnectionError as e:
+  #       return page_error(None, e, page_name)
+  #
+  #     return send_file(full_results,
+  #                      mimetype='text/csv',
+  #                      download_name=f'result_size_{line_count}.csv',
+  #                      as_attachment=True)
+  #
+  #   elif results_type == 'Display':
+  #     try:
+  #       table_results, results_summary_table = multiple_entries_match(
+  #           file,
+  # try:
+  #   # Validate file
+  #   file_valid, error_description, error_title = check_valid_upload(
+  #       file, bulk_limits.get('limit_vast_bulk'))
+  # except FileUploadException as e:
+  #   return final(searchable_fields,
+  #                bulk_limits,
+  #                page_location,
+  #                error_description=e.error_description,
+  #                error_title=e.error_title)
+
+  # if file_valid:
+  multiple_entries_match(file, all_user_input, table_id, download=True)
+  return final(all_user_input, bulk_limits, page_location)
 
 
 def final(all_user_input,
