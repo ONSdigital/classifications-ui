@@ -66,12 +66,12 @@ def multiple_entries_match(file, all_user_input, table_id, download=False):
   #   addresses.append(current_address)
   # mm_dict['addresses'] = addresses[:]
 
-  try:
+  # try:
     # Submit Multiple Match to API
-    submit_mm_job('a', all_user_input, table_id)
-  except Exception as e:
-    logging.error('Error on a multiple match API call')
-    return page_error(None, e, 'multiple_entries')
+  submit_mm_job('a', all_user_input, table_id)
+  # except Exception as e:
+  #   logging.error('Error on a multiple match API call')
+  #   return page_error(None, e, 'multiple_entries')
 
 
 # def multiple_entries_match_original(file, all_user_input, download=False):

@@ -11,6 +11,7 @@ from .utils.multiple_entries_lookup import multiple_entries_match
 from .utils.upload_utils import check_valid_upload
 from .utils.upload_utils import FileUploadException
 from .utils.bq_functions import load_csv_into_bigquery
+import logging
 
 
 page_name = 'multiple_entries'
@@ -69,7 +70,7 @@ def multiple_entries():
   file = request.files['file']
 
   table_id = load_csv_into_bigquery(file)
-  
+  logging.info(f'table_id for BQ is: {table_id}')
 
   # if not file_valid:
   #   # File invalid? Return error
