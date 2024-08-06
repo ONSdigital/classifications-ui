@@ -1,5 +1,6 @@
 import os
 import time
+import logging
 from google.cloud import bigquery
 from cims_ui import app
 
@@ -27,15 +28,12 @@ def load_csv_into_bigquery(file):
                 )
             )
             job.result()  # Waits for the job to complete.
-        print(
-            "Loaded {} rows into {}.".format(job.output_rows, table_id),
-            end=' ',
-        )
-        print(f"Time taken: {time.time() - start} seconds")
+        logging.info(f'Loaded {job.output_rows} rows into {table_id}')
+        logging.info(f'Time taken: {time.time() - start} seconds')
         
     except FileNotFoundError:
-        print(f"Error: File not found: {file}")
+        logging.error(f'Error: File not found: {file}')
     except Exception as e:
-        print(f"Error loading data into BigQuery: {e}")
+        logging.error(f"Error loading data into BigQuery: {e}")
     
     return table_id
