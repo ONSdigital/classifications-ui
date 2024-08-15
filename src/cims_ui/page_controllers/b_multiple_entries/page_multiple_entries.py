@@ -1,9 +1,10 @@
 from flask import render_template, request, session
 from flask_login import login_required
+from google.cloud import storage
 from cims_ui import app
 from cims_ui.page_helpers.cookie_utils import delete_input, load_save_store_inputs
 from cims_ui.page_helpers.security_utils import check_user_has_access_to_page
-from cims_ui.page_helpers.google_utils import get_current_group
+from cims_ui.page_helpers.google_utils import get_current_group, get_username
 from cims_ui.page_helpers.pages_location_utils import get_page_location
 from cims_ui.models.get_endpoints import get_endpoints
 from cims_ui.models.get_fields import get_fields
@@ -12,6 +13,8 @@ from .utils.upload_utils import check_valid_upload
 from .utils.upload_utils import FileUploadException
 from .utils.bq_functions import load_csv_into_bigquery
 import logging
+import time
+import uuid
 
 
 page_name = 'multiple_entries'
@@ -68,9 +71,25 @@ def multiple_entries():
   )
 
   file = request.files['file']
+  
+  # Upload user's csv to specified bucket [tested to work]
+  storage_client = storage.Client()
+  bucket_id = 'cims-ui-to-bq-975575814399'
+  bucket_obj = storage_client.bucket(bucket_id)
+  suffix = f'{round(time.time())}_{uuid.uuid4()}'
+  username = get_username()
+  new_filename = f'{username}_{suffix}.csv'
+  blob_obj = bucket_obj.blob(new_filename)
+  blob_obj.upload_from_file(file)
+  file_uri = f'gs://{bucket_id}/{new_filename}'
 
-  table_id = load_csv_into_bigquery(file)
-  logging.info(f'table_id for BQ is: {table_id}')
+  # Load user's csv to BQ table
+  table_id = load_csv_into_bigquery(file_uri, bq_dataset=username, bq_table=suffix)
+
+
+
+  # table_id = load_csv_into_bigquery(file)
+  # logging.info(f'table_id for BQ is: {table_id}')
 
   # if not file_valid:
   #   # File invalid? Return error
