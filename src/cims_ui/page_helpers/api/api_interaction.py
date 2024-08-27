@@ -11,6 +11,8 @@ import logging
 import xml.etree.ElementTree as ET
 import jwt
 import datetime
+import google.auth
+from google.auth.transport.requests import AuthorizedSession
 
 
 def api(url, called_from, all_user_input):
@@ -211,7 +213,9 @@ def null_or_undefined_to_False(var):
 
 def submit_mm_job(user, all_user_input, table_id, uprn=False):
   """API helper for job endpoints """
-  url = app.config.get('BM_API_URL') + '/bulk'
+  
+  endpoint = 'api/v1/dags/cims_multiple_entries/dagRuns'
+  url = f"{app.config.get('BM_API_URL')}/{endpoint}"
 
   # # Change the paf-nag default selection
   # if all_user_input.get('paf-nag-preference') == 'PAF':
@@ -236,12 +240,21 @@ def submit_mm_job(user, all_user_input, table_id, uprn=False):
   # addresses = str(addresses).replace(
   #     "'", '"')  # Replace quotes for correct JSON formatting
 
-  r = requests.post(
+  AUTH_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
+  CREDENTIALS, _ = google.auth.default(scopes=[AUTH_SCOPE])
+  authed_session = AuthorizedSession(CREDENTIALS)
+
+  payload = {
+    'params': params,
+    'table_id': table_id
+    }
+
+  
+  r = authed_session.request(
+      'POST',
       url,
-      headers=header,
-      params=params,
-      table_id=table_id,
-  )
+      headers = header,
+      params = payload)
 
   log_message = ("POST Request to " + r.url + "\n\n | Status Code: " +
                  str(r.status_code) + " - " + r.reason +

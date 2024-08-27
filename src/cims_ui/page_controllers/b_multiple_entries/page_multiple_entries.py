@@ -12,6 +12,7 @@ from .utils.multiple_entries_lookup import multiple_entries_match
 from .utils.upload_utils import check_valid_upload
 from .utils.upload_utils import FileUploadException
 from .utils.bq_functions import load_csv_into_bigquery
+from .utils.cs_functions import upload_to_cs
 import logging
 import time
 import uuid
@@ -72,19 +73,11 @@ def multiple_entries():
 
   file = request.files['file']
   
-  # Upload user's csv to specified bucket [tested to work]
-  storage_client = storage.Client()
-  bucket_id = 'cims-ui-to-bq-975575814399'
-  bucket_obj = storage_client.bucket(bucket_id)
-  suffix = f'{round(time.time())}_{uuid.uuid4()}'
-  username = get_username()
-  new_filename = f'{username}_{suffix}.csv'
-  blob_obj = bucket_obj.blob(new_filename)
-  blob_obj.upload_from_file(file)
-  file_uri = f'gs://{bucket_id}/{new_filename}'
+  # # Upload user's csv to specified bucket [tested to work]
+  file_uri, time_ref = upload_to_cs(file)
 
-  # Load user's csv to BQ table
-  table_id = load_csv_into_bigquery(file_uri, bq_dataset=username, bq_table=suffix)
+  # Load user's csv to BQ table [tested to work]
+  table_id = load_csv_into_bigquery(file_uri, bq_dataset=get_username(), bq_table=time_ref)
 
 
 

@@ -12,10 +12,13 @@ def load_csv_into_bigquery(file_uri, bq_dataset, bq_table):
         file: The CSV file object to load.
     """
     start = time.time()
-    project_id = app.config.get('GOOGLE_CLOUD_PROJECT_ID')
+    project_name = app.config.get('GOOGLE_CLOUD_PROJECT_ID')
     bq_client = bigquery.Client()
-    bq_client.create_dataset(bq_dataset, exists_ok=True)
-    table_id = f'{project_id}.{bq_dataset}.{bq_table}'
+    dataset = bigquery.Dataset(f'{project_name}.{bq_dataset}')
+    dataset.location = "europe-west2"
+    bq_client.create_dataset(dataset, exists_ok=True)
+
+    table_id = f'{project_name}.{bq_dataset}.{bq_table}'
     # try:
     job = bq_client.load_table_from_uri(
         file_uri,
@@ -28,7 +31,7 @@ def load_csv_into_bigquery(file_uri, bq_dataset, bq_table):
     )
     job.result()  # Waits for the job to complete.
     logging.info(f'Loaded {job.output_rows} rows into {table_id}')
-    logging.info(f'Time taken: {time.time() - start} seconds')
+    logging.info(f'Time taken: {round(time.time() - start)} seconds')
         
     # except FileNotFoundError:
     #     logging.error(f'Error: File not found: {file}')
