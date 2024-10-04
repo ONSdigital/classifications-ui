@@ -46,8 +46,8 @@ coverage/
 
 
 # Jninja Templates
-components/
-layout
+src/cims_ui/templates/components/
+src/cims_ui/templates/layout/
 
 #Auth files
 auth.sqbpro

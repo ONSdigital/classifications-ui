@@ -15,6 +15,8 @@ import google.auth
 from google.auth.transport.requests import AuthorizedSession
 
 
+
+
 def api(url, called_from, all_user_input):
   """API helper for individual API lookups"""
   header = get_header()
@@ -243,34 +245,40 @@ def submit_mm_job(user, all_user_input, table_id, uprn=False):
   AUTH_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
   CREDENTIALS, _ = google.auth.default(scopes=[AUTH_SCOPE])
   authed_session = AuthorizedSession(CREDENTIALS)
-
-  payload = {
-    'params': params,
-    'table_id': table_id
-    }
-
+ 
+  json_data={
+    "conf":{
+      "table_id":table_id,
+      "params":params
+  }}
   
-  r = authed_session.request(
-      'POST',
-      url,
-      headers = header,
-      params = payload)
+  def make_request(url, **kwargs):
+    r = authed_session.request(
+        'POST',
+        url,
+        **kwargs
+        )
+      
 
-  log_message = ("POST Request to " + r.url + "\n\n | Status Code: " +
-                 str(r.status_code) + " - " + r.reason +
-                 "\n\n | Request Headers: " + str(r.request.headers) +
-                 "\n\n | Response Headers: " + str(r.headers) +
-                 "\n\n | Response Body: " + r.text)
+    log_message = ("POST Request to " + r.url + "\n\n | Status Code: " +
+                  str(r.status_code) + " - " + r.reason +
+                  "\n\n | Request Headers: " + str(r.request.headers) +
+                  "\n\n | Response Headers: " + str(r.headers) +
+                  "\n\n | Response Body: " + r.text)
 
-  logging.info('Submmitted MMJob on endpoint"' + str(url) +
-               '"  with UserId as "' + str(username) + '"' +
-               'Request details: ' + str(log_message))
+    logging.info('Submmitted MMJob on endpoint"' + str(url) +
+                '"  with UserId as "' + str(username) + '"' +
+                'Request details: ' + str(log_message))
 
-  if r.status_code != 200:
-    logging.error(log_message)
-    raise Exception(f"Request failed with status code {r.status_code}")
+    if r.status_code != 200:
+      logging.error(log_message)
+      logging.error(r.json())
+      raise Exception(f"Request failed with status code {r.status_code}... {r.json()}")
 
-  return r
+    return r
+  
+  make_request(url, headers=header, json=json_data)
+  
 
 
 def get_params(all_user_input, removeVerbose=False):
